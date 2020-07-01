@@ -191,20 +191,8 @@ healthcheck(callback) {
      this.connector.get((data, error) => {
         if (error) {
           return callback(error);
-        } else{
-            console.log(`\nResponse returned from GET request:\n${JSON.stringify(data)}`)
-            if (data.hasOwnProperty('body')) {
-              let body_length = JSON.parse(data.body).result.length;
-              var body_data = JSON.parse(data.body).result;
-              var final_json = [];
-              for(let i = 0; i < body_length; i++) {
-                final_json.push({"change_ticket_number" : body_data[i].number, "active" : body_data[i].active, "priority" : body_data[i].priority,
-                                   "description" : body_data[i].description, "work_start" : body_data[i].work_start, "work_end" : body_data[i].work_end,
-                                   "change_ticket_key" : body_data[i].sys_id});
-              }
-              callback(final_json, error); 
-            }  
         }
+        return callback(data);
       });
   }
 
@@ -227,19 +215,9 @@ healthcheck(callback) {
 
     this.post((data, error) => {
         if (error) {
-            return callback(error);
-        }else{
-            if (data.hasOwnProperty('body')) {
-                var final_json = {};
-                var body_data = JSON.parse(data.body).result;
-                final_json = ({"change_ticket_number" : body_data.number, "active" : body_data.active, "priority" : body_data.priority,
-                                   "description" : body_data.description, "work_start" : body_data.work_start, "work_end" : body_data.work_end,
-                                   "change_ticket_key" : body_data.sys_id});
-                callback(final_json, error); 
-            } 
+        return callback(error);
         }
-        
-        // return callback(data);
+        return callback(data);
     });    
   }
 }
